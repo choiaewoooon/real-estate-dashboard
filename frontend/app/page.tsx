@@ -10,10 +10,10 @@ import {
   FiMapPin,
   FiCalendar
 } from 'react-icons/fi'
-import MarketTrendChart from '@/components/MarketTrendChart'
-import PropertyList from '@/components/PropertyList'
-import PricePredictionForm from '@/components/PricePredictionForm'
-import StatCard from '@/components/StatCard'
+import MarketTrendChart from '../components/MarketTrendChart'
+import PropertyList from '../components/PropertyList'
+import PricePredictionForm from '../components/PricePredictionForm'
+import StatCard from '../components/StatCard'
 
 interface DashboardStats {
   totalProperties: number

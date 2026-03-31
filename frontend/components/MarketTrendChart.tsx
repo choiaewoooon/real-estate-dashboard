@@ -31,8 +31,8 @@ export default function MarketTrendChart() {
 
   const fetchTrends = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-      const response = await axios.get(`${apiUrl}/api/market-trends`)
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
+      const response = await axios.get(`${apiUrl}/market-trends`)
       setTrends(response.data)
     } catch (error) {
       console.error('Error fetching market trends:', error)
