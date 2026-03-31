@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import axios from 'axios'
-import { FiCalculator, FiTrendingUp, FiHome, FiMapPin, FiDollarSign } from 'react-icons/fi'
+import { FiTrendingUp, FiHome, FiMapPin, FiDollarSign } from 'react-icons/fi'
 
 interface PredictionResult {
   predicted_price: number
@@ -213,7 +213,7 @@ export default function PricePredictionForm() {
           disabled={loading}
           className="w-full flex items-center justify-center space-x-2 btn-primary py-3"
         >
-          <FiCalculator className="w-5 h-5" />
+          <FiDollarSign className="w-5 h-5" />
           <span>{loading ? '예측 중...' : '가격 예측하기'}</span>
         </button>
       </form>
