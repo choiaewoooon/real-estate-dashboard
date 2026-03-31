@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import {
   LineChart,
   Line,
@@ -21,40 +20,33 @@ interface MarketTrend {
   transaction_count: number
 }
 
+// 샘플 데이터 - 백엔드 없이 작동
+const sampleTrendData: MarketTrend[] = [
+  { date: '2023-01', average_price: 32000, transaction_count: 85 },
+  { date: '2023-02', average_price: 32500, transaction_count: 92 },
+  { date: '2023-03', average_price: 32800, transaction_count: 105 },
+  { date: '2023-04', average_price: 33200, transaction_count: 98 },
+  { date: '2023-05', average_price: 33500, transaction_count: 112 },
+  { date: '2023-06', average_price: 34000, transaction_count: 108 },
+  { date: '2023-07', average_price: 34500, transaction_count: 95 },
+  { date: '2023-08', average_price: 35000, transaction_count: 102 },
+  { date: '2023-09', average_price: 35500, transaction_count: 115 },
+  { date: '2023-10', average_price: 36000, transaction_count: 110 },
+  { date: '2023-11', average_price: 36500, transaction_count: 105 },
+  { date: '2023-12', average_price: 37000, transaction_count: 120 },
+]
+
 export default function MarketTrendChart() {
   const [trends, setTrends] = useState<MarketTrend[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchTrends()
-  }, [])
-
-  const fetchTrends = async () => {
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
-      const response = await axios.get(`${apiUrl}/market-trends`)
-      setTrends(response.data)
-    } catch (error) {
-      console.error('Error fetching market trends:', error)
-      // 샘플 데이터 (에러 시)
-      const sampleData: MarketTrend[] = [
-        { date: '2023-01', average_price: 32000, transaction_count: 85 },
-        { date: '2023-02', average_price: 32500, transaction_count: 92 },
-        { date: '2023-03', average_price: 32800, transaction_count: 105 },
-        { date: '2023-04', average_price: 33200, transaction_count: 98 },
-        { date: '2023-05', average_price: 33500, transaction_count: 112 },
-        { date: '2023-06', average_price: 34000, transaction_count: 108 },
-        { date: '2023-07', average_price: 34500, transaction_count: 95 },
-        { date: '2023-08', average_price: 35000, transaction_count: 102 },
-        { date: '2023-09', average_price: 35500, transaction_count: 115 },
-        { date: '2023-10', average_price: 36000, transaction_count: 110 },
-        { date: '2023-11', average_price: 36500, transaction_count: 105 },
-        { date: '2023-12', average_price: 37000, transaction_count: 120 },
-      ]
-      setTrends(sampleData)
-    } finally {
+    // 백엔드 API 호출 대신 샘플 데이터 사용
+    setTimeout(() => {
+      setTrends(sampleTrendData)
       setLoading(false)
-    }
+    }, 300) // 로딩 효과를 위한 약간의 지연
+  }, [])
   }
 
   const formatCurrency = (value: number) => {

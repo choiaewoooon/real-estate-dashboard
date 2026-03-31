@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
 import { FiTrendingUp, FiHome, FiMapPin, FiDollarSign } from 'react-icons/fi'
 
 interface PredictionResult {
@@ -48,25 +47,40 @@ export default function PricePredictionForm() {
     setLoading(true)
     setError(null)
 
-    try {
-      const response = await axios.post('/api/predict-price', formData)
-      setResult(response.data)
-    } catch (err) {
-      setError('가격 예측 중 오류가 발생했습니다.')
-      console.error('Prediction error:', err)
-      
-      // 샘플 응답 (에러 시)
-      setResult({
-        predicted_price: 350000000,
-        confidence_interval: {
-          lower: 315000000,
-          upper: 385000000
-        },
-        features: formData
-      })
-    } finally {
-      setLoading(false)
-    }
+    // 백엔드 API 호출 대신 내부 계산
+    setTimeout(() => {
+      try {
+        // 간단한 가격 계산 로직 (백엔드와 동일)
+        const basePrice = formData.area * 1000
+        let price = basePrice * (1 + (formData.bedrooms - 1) * 0.1) * (1 + (formData.bathrooms - 1) * 0.05) * formData.location_score
+        
+        const typeMultipliers = {
+          "아파트": 1.2,
+          "오피스텔": 1.0,
+          "단독주택": 1.3,
+          "다세대주택": 0.9
+        }
+        
+        const multiplier = typeMultipliers[formData.property_type as keyof typeof typeMultipliers] || 1.0
+        const predictedPrice = Math.round(price * multiplier)
+        
+        const resultData: PredictionResult = {
+          predicted_price: predictedPrice,
+          confidence_interval: {
+            lower: Math.round(predictedPrice * 0.9),
+            upper: Math.round(predictedPrice * 1.1)
+          },
+          features: formData
+        }
+        
+        setResult(resultData)
+      } catch (err) {
+        setError('가격 예측 중 오류가 발생했습니다.')
+        console.error('Prediction error:', err)
+      } finally {
+        setLoading(false)
+      }
+    }, 800) // 로딩 효과를 위한 지연
   }
 
   const formatCurrency = (amount: number) => {

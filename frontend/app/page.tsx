@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import {
   FiTrendingUp,
   FiTrendingDown,
@@ -33,31 +32,51 @@ interface Property {
   property_type: string
 }
 
+// 샘플 데이터 - 백엔드 없이 작동
+const sampleProperties: Property[] = [
+  { id: 1, address: '서울 강남구 1번지', price: 350000000, area: 84, bedrooms: 3, bathrooms: 2, property_type: '아파트' },
+  { id: 2, address: '서울 서초구 15번지', price: 280000000, area: 66, bedrooms: 2, bathrooms: 1, property_type: '오피스텔' },
+  { id: 3, address: '서울 송파구 32번지', price: 420000000, area: 98, bedrooms: 4, bathrooms: 2, property_type: '아파트' },
+  { id: 4, address: '서울 마포구 8번지', price: 320000000, area: 72, bedrooms: 3, bathrooms: 2, property_type: '아파트' },
+  { id: 5, address: '경기 성남시 45번지', price: 180000000, area: 55, bedrooms: 2, bathrooms: 1, property_type: '다세대주택' },
+  { id: 6, address: '경기 과천시 12번지', price: 390000000, area: 88, bedrooms: 3, bathrooms: 2, property_type: '아파트' },
+  { id: 7, address: '서울 강남구 27번지', price: 450000000, area: 105, bedrooms: 4, bathrooms: 3, property_type: '단독주택' },
+  { id: 8, address: '서울 서초구 3번지', price: 310000000, area: 68, bedrooms: 3, bathrooms: 2, property_type: '오피스텔' },
+  { id: 9, address: '서울 송파구 19번지', price: 265000000, area: 62, bedrooms: 2, bathrooms: 1, property_type: '아파트' },
+  { id: 10, address: '서울 마포구 22번지', price: 295000000, area: 70, bedrooms: 3, bathrooms: 2, property_type: '아파트' },
+]
+
+const sampleStats: DashboardStats = {
+  totalProperties: 100,
+  averagePrice: 325000000,
+  medianPrice: 320000000,
+  propertyTypeDistribution: {
+    '아파트': 45,
+    '오피스텔': 25,
+    '단독주택': 18,
+    '다세대주택': 12
+  },
+  priceByType: {
+    '아파트': 350000000,
+    '오피스텔': 280000000,
+    '단독주택': 420000000,
+    '다세대주택': 180000000
+  }
+}
+
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [properties, setProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [])
-
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true)
-      const [statsRes, propertiesRes] = await Promise.all([
-        axios.get('/api/statistics'),
-        axios.get('/api/properties?limit=10')
-      ])
-      
-      setStats(statsRes.data)
-      setProperties(propertiesRes.data)
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error)
-    } finally {
+    // 백엔드 API 호출 대신 샘플 데이터 사용
+    setTimeout(() => {
+      setStats(sampleStats)
+      setProperties(sampleProperties)
       setLoading(false)
-    }
-  }
+    }, 500)
+  }, [])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ko-KR', {
